@@ -1,0 +1,190 @@
+-- GUI Oluştur
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "MODS_EXECUTOR"
+
+-- Ana Çerçeve (Executor)
+local main = Instance.new("Frame", gui)
+main.Size = UDim2.new(0, 500, 0, 400)
+main.Position = UDim2.new(0.2, 0, 0.2, 0)
+main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+main.Active = true
+main.Draggable = true
+
+-- Üst Sekme Butonları
+local buttons = {}
+local function addTopButton(name, position, click)
+	local btn = Instance.new("TextButton", main)
+	btn.Size = UDim2.new(0, 100, 0, 40)
+	btn.Position = UDim2.new(0, position * 100, 0, 0)
+	btn.Text = name
+	btn.TextColor3 = Color3.new(1,1,1)
+	btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	btn.MouseButton1Click:Connect(click)
+	table.insert(buttons, btn)
+end
+
+-- Sekme Sistemi
+local pages = {}
+local function createPage(name)
+	local p = Instance.new("Frame", main)
+	p.Name = name
+	p.Position = UDim2.new(0, 0, 0, 40)
+	p.Size = UDim2.new(1, 0, 1, -40)
+	p.BackgroundTransparency = 1
+	p.Visible = false
+	pages[name] = p
+	return p
+end
+local function switchPage(name)
+	for _, p in pairs(pages) do p.Visible = false end
+	pages[name].Visible = true
+end
+
+-- Executor Sekmesi
+addTopButton("EXECUTOR", 0, function() switchPage("Executor") end)
+local executorPage = createPage("Executor")
+
+local box = Instance.new("TextBox", executorPage)
+box.Size = UDim2.new(1, -20, 0, 280)
+box.Position = UDim2.new(0, 10, 0, 10)
+box.TextXAlignment = Enum.TextXAlignment.Left
+box.TextYAlignment = Enum.TextYAlignment.Top
+box.MultiLine = true
+box.ClearTextOnFocus = false
+box.Text = ""
+box.TextColor3 = Color3.new(1,1,1)
+box.BackgroundColor3 = Color3.fromRGB(40,40,40)
+
+local execute = Instance.new("TextButton", executorPage)
+execute.Size = UDim2.new(0, 150, 0, 40)
+execute.Position = UDim2.new(0, 10, 0, 300)
+execute.Text = "EXECUTE"
+execute.TextColor3 = Color3.new(1,1,1)
+execute.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+execute.MouseButton1Click:Connect(function()
+	pcall(function()
+		loadstring(box.Text)()
+	end)
+end)
+
+local clear = Instance.new("TextButton", executorPage)
+clear.Size = UDim2.new(0, 150, 0, 40)
+clear.Position = UDim2.new(0, 170, 0, 300)
+clear.Text = "TEMİZLE"
+clear.TextColor3 = Color3.new(1,1,1)
+clear.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+clear.MouseButton1Click:Connect(function()
+	box.Text = ""
+end)
+
+local openHub = Instance.new("TextButton", executorPage)
+openHub.Size = UDim2.new(0, 150, 0, 40)
+openHub.Position = UDim2.new(0, 330, 0, 300)
+openHub.Text = "HUB SCRİPT"
+openHub.TextColor3 = Color3.new(1,1,1)
+openHub.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+openHub.MouseButton1Click:Connect(function()
+	switchPage("HubScript")
+end)
+
+-- HOME Sekmesi
+addTopButton("HOME", 1, function() switchPage("Home") end)
+local home = createPage("Home")
+
+local label = Instance.new("TextLabel", home)
+label.Size = UDim2.new(1, 0, 0, 300)
+label.Position = UDim2.new(0, 0, 0, 20)
+label.Text = "THANKS\nSCRIPT MADE BY DOXZ\n🏆. SS 🏆\nNICE EXECUTOR\nTHANKS For using"
+label.TextColor3 = Color3.new(1,1,1)
+label.BackgroundTransparency = 1
+label.TextScaled = true
+
+local sound = Instance.new("Sound", home)
+sound.SoundId = "rbxassetid://76698985299412"
+sound.Looped = true
+sound.Volume = 1
+sound.Pitch = 0.5
+sound:Play()
+
+-- HUB SCRIPT Sekmesi
+local hub = createPage("HubScript")
+
+local function hubBtn(txt, pos, scriptUrl)
+	local btn = Instance.new("TextButton", hub)
+	btn.Size = UDim2.new(0, 400, 0, 40)
+	btn.Position = UDim2.new(0, 50, 0, 20 + pos * 50)
+	btn.Text = txt
+	btn.TextColor3 = Color3.new(1,1,1)
+	btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+	btn.MouseButton1Click:Connect(function()
+		loadstring(game:HttpGet(scriptUrl))()
+	end)
+end
+
+local hubTitle = Instance.new("TextLabel", hub)
+hubTitle.Text = "DOXZ MODS HUB"
+hubTitle.Size = UDim2.new(1, 0, 0, 40)
+hubTitle.TextColor3 = Color3.new(1,1,1)
+hubTitle.BackgroundTransparency = 1
+hubTitle.Position = UDim2.new(0, 0, 0, 0)
+hubTitle.TextScaled = true
+
+hubBtn("CABIN ROLE PLAY SCRIPT", 0, "https://raw.githubusercontent.com/M1ZZ001/CabinRoleplay/main/Script")
+hubBtn("EXSER (WORK FAN MADE)", 1, "https://raw.githubusercontent.com/omermods/Bbbbff/refs/heads/main/EXSER%20NEWFANMADE%20BY%20DOXZ%20%F0%9F%A6%88")
+hubBtn("BROOKHAVEN SCRIPT", 2, "https://rscripts.net/raw/invincible-script-by-komodo90003-turk-yapimi_1741912913898_T89SzocLzx.txt")
+hubBtn("HYMER Gui", 3, "https://raw.githubusercontent.com/omermods/SHSJ/refs/heads/main/HAx%20GU%C4%B0%20AHMET")
+hubBtn("TUBERLOSHACK TOOL", 4, "https://raw.githubusercontent.com/omermods/Minitool/refs/heads/main/M%C4%B0N%C4%B0TOOLtuberloshack")
+
+-- FE HUB Sekmesi
+addTopButton("FE HUB", 2, function() switchPage("FEHub") end)
+local fehub = createPage("FEHub")
+
+local title = Instance.new("TextLabel", fehub)
+title.Text = "FE HUB ❗"
+title.Size = UDim2.new(1, 0, 0, 40)
+title.TextColor3 = Color3.new(1,1,1)
+title.BackgroundTransparency = 1
+title.TextScaled = true
+
+local function feBtn(txt, pos, callback)
+	local btn = Instance.new("TextButton", fehub)
+	btn.Size = UDim2.new(0, 400, 0, 40)
+	btn.Position = UDim2.new(0, 50, 0, 50 + pos * 50)
+	btn.Text = txt
+	btn.TextColor3 = Color3.new(1,1,1)
+	btn.BackgroundColor3 = Color3.fromRGB(70,70,70)
+	btn.MouseButton1Click:Connect(callback)
+end
+
+feBtn("TOOL DRAW ( BYPASS R6/R15", 0, function()
+	local m = Instance.new("TextLabel", fehub)
+	m.Size = UDim2.new(1, 0, 0, 30)
+	m.Position = UDim2.new(0, 0, 1, -30)
+	m.Text = "MADE BY localqw6"
+	m.TextColor3 = Color3.new(1, 1, 1)
+	m.BackgroundTransparency = 1
+	task.wait(3)
+	m:Destroy()
+	loadstring(game:HttpGet("https://pastebin.com/raw/kXEX91aT"))()
+end)
+
+feBtn("TSB 🤑", 1, function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/omermods/Hhh/refs/heads/main/TSB%20TROLL%20SCR%C4%B0PT%20MODS"))()
+end)
+
+feBtn("ADMİN TALK 😱", 2, function()
+	local msg = "OMG (YETKİLİ OLAN KİŞİ ) TALALALALALA 🤑 GELDİ"
+	game.StarterGui:SetCore("ChatMakeSystemMessage", {
+		Text = msg,
+		Color = Color3.new(1, 0, 0),
+		Font = Enum.Font.GothamBold,
+		TextSize = 20
+	})
+end)
+
+feBtn("FE BOOMBOX SCRIPT", 3, function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/omermods/H-LE/refs/heads/main/BOOMBOX%20SCR%C4%B0PST%20BY%20OMER"))()
+end)
+
+-- İlk olarak EXECUTOR sayfası gösterilsin
+switchPage("Executor")
