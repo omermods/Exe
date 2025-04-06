@@ -1,0 +1,151 @@
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- ScreenGui oluştur
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = playerGui
+
+-- Ana Frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 300, 0, 500) -- Daha büyük boyut
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -150)
+mainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+mainFrame.BorderSizePixel = 2
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = screenGui
+
+-- Başlık
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.Text = "TA SCRIPTS V7 🇹🇷"
+title.TextSize = 18
+title.TextColor3 = Color3.new(1, 1, 1)
+title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+title.Font = Enum.Font.SourceSansBold
+title.Parent = mainFrame
+
+-- Buton oluşturma fonksiyonu
+local function createButton(name, posY, callback)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, 0, 0, 25)
+    button.Position = UDim2.new(0, 0, 0, posY)
+    button.Text = name
+    button.TextSize = 16
+    button.Font = Enum.Font.SourceSans
+    button.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.Parent = mainFrame
+
+    button.MouseButton1Click:Connect(callback)
+
+    return button
+end
+
+-- 1. NPC ÜSTÜ GİYME
+createButton("NPC ÜSTÜ GİYME", 40, function()
+    local character = player.Character
+    if character then
+        for _, obj in pairs(character:GetChildren()) do
+            if obj:IsA("Accessory") or obj:IsA("Shirt") or obj:IsA("Pants") then
+                obj:Destroy()
+            end
+        end
+        local newShirt = Instance.new("Shirt", character)
+        newShirt.ShirtTemplate = "http://www.roblox.com/asset/?id=5023835792"
+
+        local newPants = Instance.new("Pants", character)
+        newPants.PantsTemplate = "http://www.roblox.com/asset/?id=5023848330"
+    end
+end)
+
+-- 2. İSYANCI OLMA
+createButton("İSYANCI OLMA", 70, function()
+    local teams = game:GetService("Teams")
+    if teams:FindFirstChild("İsyancılar") then
+        player.Team = teams["İsyancılar"]
+        local backpack = player:FindFirstChild("Backpack")
+        if backpack then
+            local akm = teams["İsyancılar"]:FindFirstChild("AKM")
+            if akm then
+                local newTool = akm:Clone()
+                newTool.Parent = backpack
+            end
+        end
+    end
+end)
+
+-- 3. OYUNDAN AT (KENDİNİ KICKLE)
+createButton("OYUNDAN AT (KICK)", 100, function()
+    player:Kick("Kendi isteğinle oyundan atıldın!")
+end)
+
+-- 4. EĞİTİM BOZUCU
+createButton("EĞİTİM BOZUCU", 130, function()
+    local starterGui = game:GetService("StarterGui")
+    if starterGui:FindFirstChild("Frames") and starterGui.Frames:FindFirstChild("Egitim") then
+        starterGui.Frames.Egitim.Egitimler["TA SIKIS EĞİTİM BY OMER COK ÖZEL "].Visible = false
+        starterGui.Frames.Egitim.Egitimler["YARRAK EĞİTİMİ "].Visible = true
+    end
+end)
+
+-- 5. OF-10 VERİCİ
+createButton("OF-10 VERİCİ", 160, function()
+    local leaderstats = player:FindFirstChild("leaderstats")
+    if leaderstats then
+        leaderstats["Rütbe"].Value = "OF-10"
+    end
+end)
+
+-- 6. ÖLÜMSÜZLÜK
+createButton("ÖLÜMSÜZLÜK", 190, function()
+    if workspace:FindFirstChild("USTENSOKAN") and workspace.USTENSOKAN:FindFirstChild("Scriptler") then
+        workspace.USTENSOKAN.Scriptler:Destroy()
+    end
+end)
+
+-- 7. FE BYPASS
+createButton("FE BYPASS", 220, function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Project-lizan-fe-bypass-totally-rel-30430"))()
+end)
+
+-- 8. EXECUTOR SS
+createButton("EXECUTOR SS", 250, function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Yaazkidd-Backdoor-Executor-30485"))()
+end)
+
+-- 9. ÇÖL FARM (BUGSUZ)
+createButton("ÇÖL FARM (BUGSUZ)", 280, function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-kill-npc-gui-27774"))()
+end)
+
+-- 10. TOPKEK 💀
+createButton("TOPKEK 💀", 310, function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-topk3k-30686"))()
+end)
+
+-- 11. FE BYPASS (2)
+createButton("FE BYPASS (2)", 340, function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-901671-febypass-29978"))()
+end)
+
+-- 12. ASKERİ İNZİBAT
+createButton("ASKERİ İNZİBAT", 370, function()
+    local teams = game:GetService("Teams")
+    if teams:FindFirstChild("Askeri İnzibat") then
+        player.Team = teams["Askeri İnzibat"]
+        local backpack = player:FindFirstChild("Backpack")
+        if backpack then
+            local detainTool = teams["Askeri İnzibat"]:FindFirstChild("Detain")
+            if detainTool then
+                local newTool = detainTool:Clone()
+                newTool.Parent = backpack
+            end
+        end
+        local character = player.Character
+        if character then
+            character:SetPrimaryPartCFrame(CFrame.new(1480.06531, 10.9755058, -1126.47205, 0, 0, 1, 0, 1, 0, -1, 0, 0))
+        end
+    end
+end)
