@@ -1,0 +1,93 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoid = character:WaitForChild("Humanoid")
+local TweenService = game:GetService("TweenService")
+
+-- 📌 GUI OLUŞTURMA
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- 📌 Başlık Mesajı
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Parent = screenGui
+titleLabel.Size = UDim2.new(0, 400, 0, 50)
+titleLabel.Position = UDim2.new(0.5, -200, 0.1, 0)
+titleLabel.Text = "OMER MODS 🇹🇷 TEPE KÖY FARM ✅"
+titleLabel.TextSize = 20
+titleLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+
+-- 📌 Teleport Butonu
+local teleportButton = Instance.new("TextButton")
+teleportButton.Parent = screenGui
+teleportButton.Size = UDim2.new(0, 300, 0, 50)
+teleportButton.Position = UDim2.new(0.5, -150, 0.6, 0)
+teleportButton.Text = "🚀 Bypasslı Yavaş Teleport"
+teleportButton.TextSize = 14
+teleportButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+teleportButton.TextColor3 = Color3.new(1, 1, 1)
+
+-- 📌 Teleport Noktaları
+local teleportLocations = {
+    workspace.Points.A,
+    workspace.Points.B,
+    workspace.Points.C,
+    workspace.Points.D,
+    workspace.Points.E,
+    workspace.Points.F,
+    workspace.Points.G,
+    workspace.Points.H
+}
+
+-- 📌 AntiCheat Kontrolü ve Engelleme
+local function checkAntiCheat()
+    local replicatedStorage = game:GetService("ReplicatedStorage")
+    for _, obj in ipairs(replicatedStorage:GetChildren()) do
+        if obj:IsA("RemoteEvent") or obj:IsA("RemoteFunction") then
+            if string.find(obj.Name:lower(), "anticheat") or string.find(obj.Name:lower(), "ban") or string.find(obj.Name:lower(), "kick") then
+                obj:Destroy()
+                warn("❌ Anti-cheat kaldırıldı: " .. obj.Name)
+            end
+        end
+    end
+end
+
+-- 📌 Yavaş Teleport (Bypass)
+local function slowTeleport(targetPosition)
+    checkAntiCheat()  -- Anti-cheat kontrolü
+    local tweenInfo = TweenInfo.new(20, Enum.EasingStyle.Linear, Enum.EasingDirection.Out) -- 20 saniyede geçiş (daha yavaş)
+    local goal = {CFrame = CFrame.new(targetPosition)}
+    local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
+    tween:Play()
+    wait(20) -- Teleport tamamlandıktan sonra bekle
+end
+
+-- 📌 Teleport Döngüsü
+local teleportActive = false
+local function startSafeTeleport()
+    teleportActive = not teleportActive
+    while teleportActive do
+        for _, location in ipairs(teleportLocations) do
+            slowTeleport(location.Position) -- Noktaya yavaş teleport
+            wait(34) -- 34 saniyede bir teleport olacak
+            if not teleportActive then break end
+        end
+    end
+end
+
+teleportButton.MouseButton1Click:Connect(function()
+    startSafeTeleport()
+    -- 📌 Kill NPCs Scriptini çalıştır
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-FE-Kill-NPCs-or-bots-25445"))()
+end)
+
+-- 📌 Oyunu Hızlandırma
+game:GetService("RunService").Heartbeat:Connect(function()
+    -- Oyun hızını arttırmak için:
+    game:GetService("Workspace").Gravity = 0 -- Yerçekimini kaldırabiliriz
+    game:GetService("Workspace").SimulationRadius = 1000 -- Simülasyon aralığını arttırarak oyun hızını iyileştirebiliriz
+end)
+
+-- 📌 Başlangıçta zıplama kaldırıldı, oyuncunun uçmasını engellemek için aşağıdaki satır kaldırıldı:
+-- humanoid.Jump = true
